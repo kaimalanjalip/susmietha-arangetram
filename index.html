@@ -220,77 +220,169 @@ footer { text-align: center; padding-block: 0 40px; font-size: .72rem; letter-sp
   .revealed .lotus { animation: rise 1s ease both, glow 4s ease-in-out 1s infinite alternate !important; }
 }
 
-/* Envelope intro */
+/* Cinematic full-screen envelope opening */
 #intro {
   position: fixed; inset: 0; z-index: 50;
-  display: grid; place-items: center; align-content: center; gap: 34px;
+  display: grid; place-items: center;
+  overflow: hidden;
   background:
-    radial-gradient(80% 60% at 50% 40%, rgba(107,58,131,.85), transparent 75%),
+    radial-gradient(ellipse at 50% 48%, rgba(142,91,157,.48), transparent 58%),
+    radial-gradient(ellipse at 50% 100%, rgba(217,181,106,.12), transparent 55%),
     var(--purple-deep);
-  padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px));
-  transition: opacity .9s ease, transform .9s ease;
+  padding: 0;
   cursor: pointer;
+  isolation: isolate;
+  transition: opacity .75s ease;
 }
-#intro.gone { opacity: 0; transform: scale(1.08); pointer-events: none; }
-.intro-top { font-size: .72rem; letter-spacing: .34em; text-transform: uppercase; color: var(--muted); margin: 0; text-align: center; }
+#intro.gone { opacity: 0; pointer-events: none; }
+.intro-top {
+  position: absolute; top: max(7vh, 34px); left: 0; right: 0;
+  font-size: .72rem; letter-spacing: .38em; text-transform: uppercase;
+  color: var(--muted); margin: 0; text-align: center;
+  transition: opacity .3s ease, transform .3s ease;
+  z-index: 12;
+}
 .env {
-  position: relative; width: min(84vw, 360px); aspect-ratio: 3 / 2;
-  perspective: 1200px; margin-top: 60px;
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  perspective: 1800px; perspective-origin: 50% 42%;
+  filter: drop-shadow(0 32px 42px rgba(0,0,0,.38));
 }
 .env-back, .env-front, .env-flap { position: absolute; inset: 0; }
 .env-back {
-  background: linear-gradient(160deg, #5a2e6f, #4a2460);
-  border-radius: 8px; z-index: 1;
-  box-shadow: 0 30px 60px rgba(0,0,0,.45);
+  z-index: 1; border-radius: 0;
+  background: linear-gradient(145deg, #704486, #4b255f 58%, #3c1c50);
+  box-shadow: inset 0 0 0 2px rgba(217,181,106,.58), inset 0 0 0 10px rgba(255,255,255,.025);
+}
+.env-back::before {
+  content: ""; position: absolute; inset: 18px;
+  border: 1px solid rgba(217,181,106,.34); border-radius: 8px;
 }
 .env-card {
-  position: absolute; left: 6%; right: 6%; top: 6%; bottom: 6%; z-index: 2;
-  background: var(--ivory); color: var(--purple);
-  border-radius: 6px; display: grid; place-content: center; gap: 2px; text-align: center;
-  box-shadow: inset 0 0 0 5px var(--ivory), inset 0 0 0 6px var(--gold);
-  transition: transform 1.1s cubic-bezier(.2,.8,.2,1) .75s;
+  position: absolute; left: 7%; right: 7%; top: 7%; height: 86%;
+  z-index: 2; border-radius: 8px;
+  background: linear-gradient(145deg, #fff8f1, #f2dfd3);
+  color: var(--purple); display: grid; place-content: center; gap: 12px;
+  text-align: center; padding: 24px;
+  box-shadow: inset 0 0 0 7px #f8ede6, inset 0 0 0 8px var(--gold), 0 10px 28px rgba(0,0,0,.18);
+  transform: translateY(0) scale(.97);
+  transition: transform 1.05s cubic-bezier(.16,.82,.24,1) .22s, box-shadow .8s ease;
 }
-.env-card .c1 { font-size: .6rem; letter-spacing: .3em; text-transform: uppercase; color: var(--purple); opacity: .75; }
-.env-card .c2 { font-family: var(--script); font-size: clamp(2rem, 9vw, 2.7rem); line-height: 1.1; color: var(--purple); }
-.env-card .c3 { font-family: var(--display); font-size: .78rem; letter-spacing: .26em; text-transform: uppercase; color: #a0763a; }
+.env-card .c1 { font-size: clamp(.58rem, 1.4vw, .8rem); letter-spacing: .34em; text-transform: uppercase; color: #76517f; }
+.env-card .c2 { font-family: var(--script); font-size: clamp(2.5rem, 8vw, 5.4rem); line-height: 1.05; color: #704486; }
+.env-card .c3 { font-family: var(--display); font-size: clamp(.72rem, 1.6vw, 1rem); letter-spacing: .28em; text-transform: uppercase; color: #a0763a; }
 .env-front {
-  z-index: 3;
-  clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
-  background: linear-gradient(170deg, #7a4594, #6B3A83 60%, #5d3172);
-  border-radius: 8px;
+  z-index: 4; border-radius: 0;
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+  background: linear-gradient(155deg, #82509b 0%, #6B3A83 54%, #4f2863 100%);
+  transform: translateZ(2px);
 }
-.env-front svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.env-front::after {
+  content: ""; position: absolute; inset: 12px;
+  border: 1px solid rgba(217,181,106,.32); border-radius: 8px;
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+}
+.env-front svg, .env-flap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .env-flap {
-  z-index: 4; transform-origin: top center;
+  z-index: 5; transform-origin: 50% 0%;
   clip-path: polygon(0 0, 100% 0, 50% 58%);
-  background: linear-gradient(180deg, #82509b, #6B3A83);
-  transition: transform .9s ease, z-index 0s linear .45s;
+  background: linear-gradient(180deg, #9865aa, #71418a 75%, #5b3271);
+  backface-visibility: visible;
+  transition: transform .82s cubic-bezier(.2,.72,.2,1), z-index 0s linear .42s;
+  transform: rotateX(0deg) translateZ(4px);
 }
-.env-flap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .seal {
-  position: absolute; left: 50%; top: 58%; z-index: 5;
-  width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f6c4c1, var(--peach) 45%, #c97a78);
-  box-shadow: 0 4px 12px rgba(0,0,0,.35), inset 0 0 0 4px rgba(255,255,255,.18);
-  display: grid; place-items: center;
-  transition: opacity .35s ease, transform .35s ease;
+  position: absolute; left: 50%; top: 56%; z-index: 8;
+  width: clamp(58px, 8vw, 88px); aspect-ratio: 1;
+  margin: 0; transform: translate(-50%,-50%);
+  border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 34% 28%, #ffd9d1, #efa09d 48%, #b96068);
+  box-shadow: 0 5px 18px rgba(0,0,0,.34), inset 0 0 0 5px rgba(255,255,255,.22), 0 0 0 1px rgba(255,224,198,.7);
+  transition: opacity .25s ease;
 }
-.seal svg { width: 36px; height: 36px; }
+.seal::before { content:""; position:absolute; inset:8px; border:1px solid rgba(112,55,75,.55); border-radius:50%; }
+.seal svg { width: 56%; height: 56%; position:relative; }
+.seal-half { position:absolute; inset:0; display:grid; place-items:center; transition: transform .65s cubic-bezier(.2,.8,.2,1), opacity .3s ease; }
+.seal-half svg { width:56%; height:56%; }
+.seal-half.left { clip-path: inset(0 48% 0 0); }
+.seal-half.right { clip-path: inset(0 0 0 48%); }
+.spark-burst { position:absolute; inset:0; z-index:9; pointer-events:none; }
+.spark-burst i {
+  position:absolute; left:50%; top:56%; width:6px; height:6px; border-radius:50%;
+  background: radial-gradient(circle, #fff7d2 0 20%, #e8bd67 45%, rgba(217,181,106,0) 75%);
+  opacity:0; transform:translate(-50%,-50%) scale(.2);
+}
 .tap {
-  font-family: var(--display); letter-spacing: .3em; text-transform: uppercase;
-  font-size: .8rem; color: var(--gold); margin: 0;
-  animation: pulse 1.6s ease-in-out infinite;
-  transition: opacity .3s ease;
+  position:absolute; bottom:max(7vh, 32px); left:0; right:0;
+  font-family:var(--display); letter-spacing:.32em; text-transform:uppercase;
+  font-size:.82rem; color:var(--gold); margin:0; text-align:center;
+  animation:pulse 1.7s ease-in-out infinite;
+  transition:opacity .3s ease;
+  z-index:12;
 }
-#intro.open .seal { opacity: 0; transform: scale(.6); }
-#intro.open .env-flap { transform: rotateX(180deg); z-index: 1; }
-#intro.open .env-card { transform: translateY(-62%); }
-#intro.open .tap, #intro.open .intro-top { opacity: 0; animation: none; }
-.intro-top { transition: opacity .4s ease; }
-@keyframes pulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
-html.locked, html.locked body { overflow: hidden; }
-@keyframes rise { from { opacity: .001; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes glow { from { filter: drop-shadow(0 0 0 rgba(217,181,106,0)); } to { filter: drop-shadow(0 0 10px rgba(217,181,106,.55)); } }
+#intro.open .intro-top, #intro.open .tap { opacity:0; transform:translateY(-8px); animation:none; }
+#intro.open .seal { opacity:1; animation:sealGlow .42s ease both; }
+#intro.open .seal-half.left { transform:translate(-19px,-8px) rotate(-24deg); opacity:0; }
+#intro.open .seal-half.right { transform:translate(19px,-8px) rotate(24deg); opacity:0; }
+#intro.open .env-flap { transform:rotateX(-168deg) translateZ(4px); z-index:1; }
+#intro.open .env-card {
+  z-index:6; transform:translateY(-43%) scale(1.025);
+  box-shadow:inset 0 0 0 7px #f8ede6, inset 0 0 0 8px var(--gold), 0 24px 48px rgba(0,0,0,.25);
+}
+#intro.drop .env-front, #intro.drop .env-back, #intro.drop .env-flap, #intro.drop .seal {
+  animation:envelopeDrop .9s cubic-bezier(.55,0,.9,.35) forwards;
+}
+#intro.drop .env-card { animation:cardLift .9s cubic-bezier(.16,.82,.24,1) forwards; }
+@keyframes pulse { 0%,100%{opacity:.48} 50%{opacity:1} }
+@keyframes sealGlow {
+  0% { box-shadow:0 5px 18px rgba(0,0,0,.34),0 0 0 0 rgba(255,220,160,0); }
+  55% { box-shadow:0 5px 22px rgba(0,0,0,.25),0 0 34px 15px rgba(255,218,151,.85); }
+  100% { box-shadow:0 5px 18px rgba(0,0,0,.34),0 0 16px 5px rgba(255,218,151,.45); }
+}
+@keyframes envelopeDrop { to { transform:translateY(110vh) rotate(7deg); opacity:0; } }
+@keyframes cardLift { 0%{transform:translateY(-43%) scale(1.025);opacity:1} 55%{transform:translateY(-72%) scale(1.06);opacity:1} 100%{transform:translateY(-82%) scale(1.07);opacity:1} }
+#petals { position:fixed; inset:0; z-index:45; overflow:hidden; pointer-events:none; opacity:0; }
+#petals.active { opacity:1; }
+#petals i {
+  position:absolute; top:-12vh; width:13px; height:20px;
+  border-radius:80% 10% 80% 10%; opacity:0;
+  background:linear-gradient(145deg,#ffe0c8,#e9a19a 65%,#bd7778);
+  box-shadow:0 2px 7px rgba(0,0,0,.12);
+  animation:petalFall var(--dur,7s) linear var(--delay,0s) infinite;
+}
+#petals i.gold { width:9px; height:15px; background:linear-gradient(145deg,#fff0bd,#d9b56a 70%,#a77a3c); }
+@keyframes petalFall {
+  0% { transform:translate3d(0,-8vh,0) rotate(0deg); opacity:0; }
+  8% { opacity:.9; }
+  50% { transform:translate3d(var(--drift,50px),55vh,0) rotate(220deg); }
+  100% { transform:translate3d(calc(var(--drift,50px) * -1),115vh,0) rotate(520deg); opacity:0; }
+}
+html.locked, html.locked body { overflow:hidden; }
+@keyframes rise { from { opacity:.001; transform:translateY(14px); } to { opacity:1; transform:none; } }
+@keyframes glow { from { filter:drop-shadow(0 0 0 rgba(217,181,106,0)); } to { filter:drop-shadow(0 0 10px rgba(217,181,106,.55)); } }
+@media (max-width:600px) {
+  .env-card { left:5%; right:5%; height:88%; padding:14px; }
+  .intro-top { top:12vh; }
+  .tap { bottom:12vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #intro, #petals, .env-card, .env-flap, .seal-half { animation:none !important; transition:none !important; }
+}
+
+/* Optional background score: starts from the visitor's opening tap */
+#music-toggle {
+  position: fixed; right: max(18px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 60; display: inline-flex; align-items: center; gap: 9px;
+  border: 1px solid rgba(217,181,106,.72); border-radius: 999px;
+  padding: 11px 16px; color: var(--gold); background: rgba(42,18,54,.88);
+  font: 600 .75rem var(--body); letter-spacing: .12em; text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(0,0,0,.22); cursor: pointer; backdrop-filter: blur(8px);
+}
+#music-toggle[hidden] { display:none; }
+#music-toggle:focus-visible { outline: 2px solid var(--peach); outline-offset: 4px; }
+#music-toggle .music-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--peach); box-shadow: 0 0 10px rgba(241,166,163,.8); }
+#music-credit { text-align:center; padding: 0 20px 22px; color: var(--muted); font-size: .66rem; letter-spacing: .04em; }
+#music-credit a { color: var(--gold); }
+@media (prefers-reduced-motion: reduce) { #music-toggle { backdrop-filter:none; } }
 </style>
 </head>
 <body>
@@ -330,15 +422,19 @@ html.locked, html.locked body { overflow: hidden; }
       </svg>
     </div>
     <div class="seal" aria-hidden="true">
-      <svg viewBox="0 0 80 52"><g fill="none" stroke="#6B3A83" stroke-width="3">
-        <path d="M40 4 C48 16 48 30 40 44 C32 30 32 16 40 4 Z"/>
-        <path d="M40 44 C30 36 22 24 22 12 C30 16 36 26 40 44 Z"/>
-        <path d="M40 44 C50 36 58 24 58 12 C50 16 44 26 40 44 Z"/>
-      </g></svg>
+      <span class="seal-half left"><svg viewBox="0 0 80 52"><path d="M40 4 C48 16 48 30 40 44 C32 30 32 16 40 4 Z M40 44 C30 36 22 24 22 12 C30 16 36 26 40 44 Z" fill="none" stroke="#713b68" stroke-width="3"/></svg></span>
+      <span class="seal-half right"><svg viewBox="0 0 80 52"><path d="M40 4 C48 16 48 30 40 44 C32 30 32 16 40 4 Z M40 44 C50 36 58 24 58 12 C50 16 44 26 40 44 Z" fill="none" stroke="#713b68" stroke-width="3"/></svg></span>
     </div>
+    <div class="spark-burst" aria-hidden="true"></div>
   </div>
   <p class="tap">Tap to open</p>
 </div>
+<div id="petals" aria-hidden="true"></div>
+<!-- Place the licensed MP3 named arangetram-music.mp3 beside this HTML file. -->
+<audio id="invitation-music" src="arangetram-music.mp3" preload="none" loop></audio>
+<button id="music-toggle" type="button" aria-pressed="false" aria-label="Turn invitation music on" hidden>
+  <span class="music-dot" aria-hidden="true"></span><span id="music-label">Music off</span>
+</button>
 
 <header class="hero">
   <div class="wrap">
@@ -470,27 +566,115 @@ html.locked, html.locked body { overflow: hidden; }
 </main>
 
 <footer>Nartanlaya Perth · 2027</footer>
+<p id="music-credit">Optional instrumental score: <a href="https://pixabay.com/music/india-free-soul-indian-sitar-flute-tabla-mridangam-nadaswaram-413707/" target="_blank" rel="noopener">Free Soul Indian Sitar, Flute, Tabla, Mridangam &amp; Nadaswaram</a> · kalsstockmedia / Pixabay</p>
 
 <script>
 (function () {
   var intro = document.getElementById("intro");
   var root = document.documentElement;
+  var petals = document.getElementById("petals");
+  var burst = intro.querySelector(".spark-burst");
   var opened = false;
+  var music = document.getElementById("invitation-music");
+  var musicToggle = document.getElementById("music-toggle");
+  var musicLabel = document.getElementById("music-label");
+  var musicOn = false;
+  var fadeTimer = null;
+
+  function startMusicFromOpeningTap() {
+    // Browsers permit playback here because this runs directly from the user's tap.
+    music.volume = 0;
+    var playPromise = music.play();
+    if (playPromise && typeof playPromise.then === "function") {
+      playPromise.then(function () {
+        musicOn = true;
+        musicToggle.hidden = false;
+        musicToggle.setAttribute("aria-pressed", "true");
+        musicToggle.setAttribute("aria-label", "Turn invitation music off");
+        musicLabel.textContent = "Music on";
+        var step = 0;
+        if (fadeTimer) window.clearInterval(fadeTimer);
+        fadeTimer = window.setInterval(function () {
+          step += 1;
+          music.volume = Math.min(.48, step * .04);
+          if (music.volume >= .48) window.clearInterval(fadeTimer);
+        }, 100);
+      }).catch(function () {
+        musicToggle.hidden = false;
+        musicLabel.textContent = "Add music file";
+        musicToggle.setAttribute("aria-label", "Music file not found; add arangetram-music.mp3");
+      });
+    }
+  }
+
+  musicToggle.addEventListener("click", function (event) {
+    event.stopPropagation();
+    if (!musicOn) {
+      music.volume = .48;
+      music.play().then(function () {
+        musicOn = true;
+        musicLabel.textContent = "Music on";
+        musicToggle.setAttribute("aria-pressed", "true");
+        musicToggle.setAttribute("aria-label", "Turn invitation music off");
+      }).catch(function () { musicLabel.textContent = "Add music file"; });
+    } else {
+      music.pause();
+      musicOn = false;
+      musicLabel.textContent = "Music off";
+      musicToggle.setAttribute("aria-pressed", "false");
+      musicToggle.setAttribute("aria-label", "Turn invitation music on");
+    }
+  });
+
+  // Create the gold particle burst and a restrained shower of peach/gold petals.
+  for (var i = 0; i < 22; i++) {
+    var spark = document.createElement("i");
+    var angle = (Math.PI * 2 * i) / 22;
+    var distance = 90 + (i % 4) * 24;
+    spark.style.setProperty("--sx", Math.cos(angle) * distance + "px");
+    spark.style.setProperty("--sy", Math.sin(angle) * distance + "px");
+    burst.appendChild(spark);
+  }
+  for (var j = 0; j < 34; j++) {
+    var petal = document.createElement("i");
+    if (j % 4 === 0) petal.className = "gold";
+    petal.style.left = (Math.random() * 100) + "%";
+    petal.style.setProperty("--dur", (6 + Math.random() * 6) + "s");
+    petal.style.setProperty("--delay", (Math.random() * 5) + "s");
+    petal.style.setProperty("--drift", ((Math.random() * 180) - 90) + "px");
+    petals.appendChild(petal);
+  }
+
   function finish() {
     intro.classList.add("gone");
     root.classList.remove("locked");
     document.body.classList.add("revealed");
-    setTimeout(function () { intro.hidden = true; }, 950);
+    petals.classList.add("active");
+    musicToggle.hidden = false;
+    window.setTimeout(function () { intro.hidden = true; }, 800);
   }
   function openEnvelope() {
     if (opened) return;
     opened = true;
+    startMusicFromOpeningTap();
     intro.classList.add("open");
-    setTimeout(finish, 2300);
+    Array.prototype.forEach.call(burst.children, function (spark) {
+      var sx = spark.style.getPropertyValue("--sx");
+      var sy = spark.style.getPropertyValue("--sy");
+      spark.animate([
+        { transform: "translate(-50%,-50%) scale(.2)", opacity: 0 },
+        { transform: "translate(calc(-50% + " + sx + "),calc(-50% + " + sy + ")) scale(1.5)", opacity: 1, offset: .45 },
+        { transform: "translate(calc(-50% + " + sx + "),calc(-50% + " + sy + ")) scale(.1)", opacity: 0 }
+      ], { duration: 850, easing: "cubic-bezier(.15,.7,.25,1)", fill: "forwards" });
+    });
+    window.setTimeout(function () { intro.classList.add("drop"); }, 1900);
+    window.setTimeout(finish, 3000);
   }
+
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduce) {
     intro.hidden = true;
+    root.classList.remove("locked");
     document.body.classList.add("revealed");
   } else {
     root.classList.add("locked");
@@ -498,7 +682,6 @@ html.locked, html.locked body { overflow: hidden; }
     intro.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openEnvelope(); }
     });
-    setTimeout(openEnvelope, 2200);
   }
 })();
 
